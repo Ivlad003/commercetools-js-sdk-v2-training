@@ -1,7 +1,12 @@
 const { importApiRoot, projectKey } = require("./client.js");
 const csvtojsonV2 = require("csvtojson");
 
-module.exports.createImportSink = (importSinkDraftData) =>{}
+module.exports.createImportSink = (importSinkDraftData) =>
+ importApiRoot
+ .withProjectKeyValue({projectKey})
+ .importSinks()
+ .post({body: createImportSinkDraft(importSinkDraftData)})
+ .execute()
 
 const createImportSinkDraft = (importSinkDraftData) => {
   const { key, resourceType } = importSinkDraftData;
@@ -11,9 +16,22 @@ const createImportSinkDraft = (importSinkDraftData) => {
   };
 };
 
-module.exports.checkImportOperationStatus = (importSinkKey, id) =>{}
+module.exports.checkImportOperationStatus = (importSinkKey, id) => 
+importApiRoot
+.withProjectKeyValue({projectKey})
+.productDrafts()
+.importSinkKeyWithImportSinkKeyValue({importSinkKey})
+.importOperations()
+.withIdValue({id})
+.get()
+.execute();
 
-module.exports.importProducts = async (importSinkKey) =>{}
+module.exports.importProducts = async (importSinkKey) => 
+importApiRoot.withProjectKeyValue({projectKey})
+.productDrafts()
+.importSinkKeyWithImportSinkKeyValue({importSinkKey})
+.post({body: await getProductDraftsArray()}).execute()
+
 
 const createImportProductsDraft = async () => {
   return {
@@ -26,7 +44,7 @@ const getProductDraftsArray = () => {
   // get data from csv
   // create product drafts array and send it back
   let productDraftsArray = [];
-  let participantNamePrefix = "ff";
+  let participantNamePrefix = "vk";
   return csvtojsonV2()
     .fromFile("./products.csv")
     .then((products) => {

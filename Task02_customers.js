@@ -22,6 +22,6 @@ const customerSampleData = {
 
 // getCustomerById("817328d0-c05d-41f1-a61b-2b7a96f3e807").then(log).catch(log);
 
-createCustomerKeyVerfiedEmail(customerSampleData).then(log).catch(log);
+// createCustomerKeyVerfiedEmail(customerSampleData).then(log).catch(log);
 
-//assignCustomerToCustomerGroup('test123','testCustomerGroup123').then(log).catch(log);
+assignCustomerToCustomerGroup('test1233','testCustomerGroup123').then(log).catch(log);
