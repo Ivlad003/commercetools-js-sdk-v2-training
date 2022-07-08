@@ -15,12 +15,30 @@ require("dotenv").config();
 
 const fetch = require("node-fetch");
 
-const projectKey = "training-fady-24-7";
+const projectKey = process.env.projectKey;
 
 //use .env for credentials process.env.adminClientId 
 
 const getClient = () => {
-  
+  const authMiddleware = createAuthMiddlewareForClientCredentialsFlow({
+    host: process.env.authUrl,
+    projectKey,
+    credentials: {
+      clientId: process.env.myClientId,
+      clientSecret: process.env.myClientSecret,
+    },
+    scopes: [process.env.scopes],
+    fetch,
+  })
+  const httpMiddleware = createHttpMiddleware({
+    host: process.env.apiUrl,
+    fetch,
+  })
+  const client = createClient({
+    middlewares: [authMiddleware, httpMiddleware],
+  })
+
+  return client
 };
 
 const getImportClient = () => {
